@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { useAppStore } from "@/lib/store";
 import { useTheme } from "next-themes";
 
-const navLinks = [
+const baseLinks = [
   { href: "/", label: "Home" },
   { href: "/lab", label: "Lab" },
   { href: "/stack", label: "Stack" },
@@ -24,7 +24,11 @@ export function Navigation() {
   const setCommandOpen = useAppStore((s) => s.setCommandOpen);
   const { theme, setTheme } = useTheme();
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const navLinks = baseLinks;
 
   return (
     <motion.header
@@ -72,7 +76,11 @@ export function Navigation() {
               className="hidden md:flex items-center justify-center rounded-lg border border-void-border bg-void-surface/50 p-2 text-void-muted transition-colors hover:text-void-text"
               aria-label="Toggle theme"
             >
-              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              {theme === "dark" ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
             </button>
           )}
 
@@ -88,7 +96,11 @@ export function Navigation() {
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden rounded-lg p-2 hover:bg-void-surface"
           >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
           </button>
         </div>
       </nav>

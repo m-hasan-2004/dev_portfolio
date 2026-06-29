@@ -4,7 +4,7 @@ A production-grade, ultra-modern developer portfolio website for **Hasan** — a
 
 ## Tech Stack
 
-- **Framework:** Next.js 14 or 16?(App Router)
+- **Framework:** Next.js 14 (App Router)
 - **Language:** TypeScript (strict mode)
 - **Styling:** Tailwind CSS
 - **Components:** Custom shadcn/ui-style component system
@@ -38,17 +38,14 @@ Create a `.env.local` file (optional — works without it):
 GITHUB_TOKEN=your_github_token_here
 ```
 
-The Lab page fetches projects from the GitHub API. Without a token, the API allows **60 requests/hour**. With a Personal Access Token, you get **5,000 requests/hour**.
+**GitHub Token (for Lab page):**
 
-**How to get a GitHub token:**
+Without a token, the API allows **60 requests/hour**. With a Personal Access Token, you get **5,000 requests/hour**.
 
 1. Go to [github.com](https://github.com) → **Settings** → **Developer settings** → **Personal access tokens** → **Tokens (classic)**
 2. Click **Generate new token**
 3. Give it any name (e.g. "portfolio"), leave all scopes unchecked
 4. Copy the token (starts with `ghp_...`)
-5. Paste it into `.env.local`
-
-The portfolio works without a token — it's only needed if you hit rate limits.
 
 ## Deploy to Vercel
 
@@ -78,13 +75,14 @@ The portfolio works without a token — it's only needed if you hit rate limits.
 ## Features
 
 - Dark-first UI with neon gradient accents
+- Light/dark mode toggle
 - Glassmorphism cards and components
 - Smooth page transitions (Framer Motion)
 - Typewriter effect on hero section
 - Animated skill progress bars
 - Timeline with alternating layout
 - Command palette (Cmd/Ctrl + K)
-- Live GitHub project fetching
+- Live GitHub project fetching with caching
 - Responsive design (mobile-first)
 - SEO metadata + OpenGraph + sitemap
 - Scroll progress indicator

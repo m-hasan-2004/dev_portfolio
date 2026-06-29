@@ -5,9 +5,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAppStore } from "@/lib/store";
 import { useKeyboard } from "@/hooks/use-keyboard";
 import { useRouter } from "next/navigation";
-import { Home, FlaskConical, Layers, Briefcase, Mail, Github, Search } from "lucide-react";
+import {
+  Home,
+  FlaskConical,
+  Layers,
+  Briefcase,
+  Mail,
+  Github,
+  Search,
+} from "lucide-react";
 
-const pages = [
+const basePages = [
   { icon: Home, label: "Home", href: "/" },
   { icon: FlaskConical, label: "Lab", href: "/lab" },
   { icon: Layers, label: "Stack", href: "/stack" },
@@ -34,7 +42,7 @@ export function CommandPalette() {
   }, [commandOpen]);
 
   const allItems = [
-    ...pages.map((p) => ({ ...p, type: "page" as const })),
+    ...basePages.map((p) => ({ ...p, type: "page" as const })),
     ...links.map((l) => ({ ...l, type: "link" as const })),
   ];
 
@@ -89,7 +97,9 @@ export function CommandPalette() {
               </div>
               <div className="max-h-80 overflow-y-auto p-2">
                 {filtered.length === 0 ? (
-                  <div className="py-8 text-center text-sm text-void-muted">No results found.</div>
+                  <div className="py-8 text-center text-sm text-void-muted">
+                    No results found.
+                  </div>
                 ) : (
                   filtered.map((item) => (
                     <button
