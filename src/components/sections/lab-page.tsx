@@ -125,7 +125,7 @@ export function LabPageClient() {
             className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
               filter === "all"
                 ? "bg-accent-purple text-white"
-                : "bg-void-surface text-void-muted hover:text-white border border-void-border"
+                : "bg-void-surface text-void-muted hover:text-void-text border border-void-border"
             }`}
           >
             All
@@ -137,7 +137,7 @@ export function LabPageClient() {
               className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                 filter === lang
                   ? "bg-accent-purple text-white"
-                  : "bg-void-surface text-void-muted hover:text-white border border-void-border"
+                  : "bg-void-surface text-void-muted hover:text-void-text border border-void-border"
               }`}
             >
               {lang}
@@ -148,7 +148,7 @@ export function LabPageClient() {
               setLoading(true);
               fetchRepos(true);
             }}
-            className="ml-auto rounded-lg p-2 text-void-muted hover:text-white hover:bg-void-surface border border-void-border transition-colors"
+            className="ml-auto rounded-lg p-2 text-void-muted hover:text-void-text hover:bg-void-surface border border-void-border transition-colors"
             aria-label="Refresh projects"
           >
             <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />

@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Terminal, Menu, X, Settings } from "lucide-react";
-import { useState } from "react";
+import { Terminal, Menu, X, Settings, Sun, Moon } from "lucide-react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/lib/store";
+import { useTheme } from "next-themes";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -18,8 +19,12 @@ const navLinks = [
 
 export function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const setCommandOpen = useAppStore((s) => s.setCommandOpen);
+  const { theme, setTheme } = useTheme();
+
+  useEffect(() => setMounted(true), []);
 
   return (
     <motion.header
@@ -44,14 +49,14 @@ export function Navigation() {
               className={cn(
                 "relative rounded-lg px-4 py-2 text-sm font-medium transition-colors",
                 pathname === link.href
-                  ? "text-white"
-                  : "text-void-muted hover:text-white"
+                  ? "text-void-text"
+                  : "text-void-muted hover:text-void-text"
               )}
             >
               {pathname === link.href && (
                 <motion.div
                   layoutId="activeNav"
-                  className="absolute inset-0 rounded-lg bg-void-surface border border-void-border"
+                  className="absolute inset-0 rounded-lg bg-void-card border border-void-border"
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
@@ -60,10 +65,20 @@ export function Navigation() {
           ))}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          {mounted && (
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="hidden md:flex items-center justify-center rounded-lg border border-void-border bg-void-surface/50 p-2 text-void-muted transition-colors hover:text-void-text"
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
+          )}
+
           <button
             onClick={() => setCommandOpen(true)}
-            className="hidden md:flex items-center justify-center rounded-lg border border-void-border bg-void-surface/50 p-2 text-void-muted transition-colors hover:text-white"
+            className="hidden md:flex items-center justify-center rounded-lg border border-void-border bg-void-surface/50 p-2 text-void-muted transition-colors hover:text-void-text"
             aria-label="Settings"
           >
             <Settings className="h-4 w-4" />
@@ -94,8 +109,8 @@ export function Navigation() {
                 className={cn(
                   "rounded-lg px-4 py-3 text-sm font-medium transition-colors",
                   pathname === link.href
-                    ? "bg-void-surface text-white"
-                    : "text-void-muted hover:bg-void-surface hover:text-white"
+                    ? "bg-void-card text-void-text"
+                    : "text-void-muted hover:bg-void-surface hover:text-void-text"
                 )}
               >
                 {link.label}

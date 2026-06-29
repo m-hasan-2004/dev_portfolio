@@ -22,8 +22,8 @@ export function HeroSection() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-20">
       {/* Background gradient orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-accent-purple/10 blur-[128px] animate-glow-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-accent-blue/10 blur-[128px] animate-glow-pulse" style={{ animationDelay: "1.5s" }} />
+        <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-accent-purple/20 dark:bg-accent-purple/10 blur-[128px] animate-glow-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-accent-blue/20 dark:bg-accent-blue/10 blur-[128px] animate-glow-pulse" style={{ animationDelay: "1.5s" }} />
       </div>
 
       <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">

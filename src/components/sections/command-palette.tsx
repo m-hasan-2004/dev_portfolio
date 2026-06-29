@@ -5,8 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAppStore } from "@/lib/store";
 import { useKeyboard } from "@/hooks/use-keyboard";
 import { useRouter } from "next/navigation";
-import { Home, FlaskConical, Layers, Briefcase, Mail, Github, Sun, Moon, Search } from "lucide-react";
-import { useTheme } from "next-themes";
+import { Home, FlaskConical, Layers, Briefcase, Mail, Github, Search } from "lucide-react";
 
 const pages = [
   { icon: Home, label: "Home", href: "/" },
@@ -23,7 +22,6 @@ const links = [
 export function CommandPalette() {
   const router = useRouter();
   const { commandOpen, setCommandOpen } = useAppStore();
-  const { theme, setTheme } = useTheme();
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   useKeyboard();
@@ -36,9 +34,8 @@ export function CommandPalette() {
   }, [commandOpen]);
 
   const allItems = [
-    ...pages.map((p) => ({ ...p, type: "page" })),
-    ...links.map((l) => ({ ...l, type: "link" })),
-    { icon: theme === "dark" ? Sun : Moon, label: "Toggle Theme", href: "#theme", type: "theme" },
+    ...pages.map((p) => ({ ...p, type: "page" as const })),
+    ...links.map((l) => ({ ...l, type: "link" as const })),
   ];
 
   const filtered = allItems.filter((item) =>
@@ -46,9 +43,7 @@ export function CommandPalette() {
   );
 
   const handleSelect = (item: (typeof allItems)[number]) => {
-    if (item.type === "theme") {
-      setTheme(theme === "dark" ? "light" : "dark");
-    } else if (item.type === "link") {
+    if (item.type === "link") {
       window.open(item.href, "_blank");
     } else {
       router.push(item.href);
@@ -59,23 +54,22 @@ export function CommandPalette() {
   return (
     <AnimatePresence>
       {commandOpen && (
-        <>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-void-bg/60 backdrop-blur-sm"
             onClick={() => setCommandOpen(false)}
           />
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: -10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: -10 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[101] w-full max-w-lg"
+            className="relative z-10 w-full max-w-lg mx-4"
           >
             <div className="rounded-xl border border-void-border bg-void-surface shadow-2xl overflow-hidden">
-              {/* Search input */}
               <div className="flex items-center gap-3 border-b border-void-border px-4 py-3">
                 <Search className="h-4 w-4 text-void-muted shrink-0" />
                 <input
@@ -93,8 +87,6 @@ export function CommandPalette() {
                   ESC
                 </kbd>
               </div>
-
-              {/* Results */}
               <div className="max-h-80 overflow-y-auto p-2">
                 {filtered.length === 0 ? (
                   <div className="py-8 text-center text-sm text-void-muted">No results found.</div>
@@ -113,7 +105,7 @@ export function CommandPalette() {
               </div>
             </div>
           </motion.div>
-        </>
+        </div>
       )}
     </AnimatePresence>
   );

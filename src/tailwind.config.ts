@@ -11,12 +11,12 @@ const config: Config = {
     extend: {
       colors: {
         void: {
-          bg: "#0a0a0b",
-          surface: "#111113",
-          card: "#16161a",
-          border: "#1e1e24",
-          muted: "#71717a",
-          text: "#fafafa",
+          bg: "hsl(var(--void-bg))",
+          surface: "hsl(var(--void-surface))",
+          card: "hsl(var(--void-card))",
+          border: "hsl(var(--void-border))",
+          muted: "hsl(var(--void-muted))",
+          text: "hsl(var(--void-text))",
         },
         accent: {
           purple: "#8b5cf6",

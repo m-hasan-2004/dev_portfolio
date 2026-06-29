@@ -3,6 +3,24 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --void-bg: 0 0% 100%;
+    --void-surface: 0 0% 98%;
+    --void-card: 0 0% 96%;
+    --void-border: 0 0% 85%;
+    --void-muted: 0 0% 40%;
+    --void-text: 0 0% 9%;
+  }
+
+  .dark {
+    --void-bg: 240 6% 4%;
+    --void-surface: 240 5% 7%;
+    --void-card: 240 5% 10%;
+    --void-border: 240 5% 13%;
+    --void-muted: 240 4% 46%;
+    --void-text: 0 0% 98%;
+  }
+
   * {
     @apply border-void-border;
   }
@@ -12,11 +30,11 @@
   }
 
   body {
-    @apply bg-void-bg text-void-text antialiased;
+    @apply bg-void-bg text-void-text antialiased transition-colors duration-300;
   }
 
   ::selection {
-    @apply bg-accent-purple/30 text-white;
+    @apply bg-accent-purple/30;
   }
 
   ::-webkit-scrollbar {
@@ -38,11 +56,28 @@
 
 @layer components {
   .glass {
-    @apply bg-void-surface/50 backdrop-blur-xl border border-void-border/50;
+    @apply backdrop-blur-xl border transition-all duration-300;
   }
 
-  .glow-border {
-    @apply relative before:absolute before:inset-[-1px] before:rounded-[inherit] before:bg-gradient-to-r before:from-accent-purple before:to-accent-blue before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100;
+  .dark .glass {
+    background: hsl(240 5% 7% / 0.5);
+    border-color: hsl(240 5% 13% / 0.5);
+  }
+
+  :root:not(.dark) .glass {
+    background: hsl(0 0% 100% / 0.9);
+    border-color: hsl(0 0% 85%);
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.04),
+      0 4px 12px rgb(0 0 0 / 0.06),
+      0 0 0 1px rgb(0 0 0 / 0.02);
+  }
+
+  :root:not(.dark) .glass:hover {
+    box-shadow:
+      0 2px 4px rgb(0 0 0 / 0.06),
+      0 8px 24px rgb(0 0 0 / 0.08),
+      0 0 0 1px rgb(0 0 0 / 0.03);
   }
 
   .gradient-text {
@@ -51,6 +86,15 @@
 
   .gradient-border {
     @apply bg-gradient-to-r from-accent-purple to-accent-blue;
+  }
+
+  /* Light mode shadow utilities */
+  :root:not(.dark) .shadow-soft {
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.06), 0 0 0 1px rgb(0 0 0 / 0.03);
+  }
+
+  :root:not(.dark) .shadow-medium {
+    box-shadow: 0 4px 16px rgb(0 0 0 / 0.08), 0 0 0 1px rgb(0 0 0 / 0.04);
   }
 }
 

@@ -11,7 +11,7 @@ const Badge = React.forwardRef<
       "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-colors",
       variant === "default" && "bg-accent-purple/10 text-accent-purple border border-accent-purple/20",
       variant === "outline" && "border border-void-border text-void-muted",
-      variant === "glow" && "bg-gradient-to-r from-accent-purple/20 to-accent-blue/20 text-white border border-accent-purple/30",
+      variant === "glow" && "bg-gradient-to-r from-accent-purple/15 to-accent-blue/15 text-accent-purple border border-accent-purple/25 shadow-sm dark:text-white dark:border-accent-purple/30",
       className
     )}
     {...props}

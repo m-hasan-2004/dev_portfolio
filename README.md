@@ -4,7 +4,7 @@ A production-grade, ultra-modern developer portfolio website for **Hasan** — a
 
 ## Tech Stack
 
-- **Framework:** Next.js 14 (App Router)
+- **Framework:** Next.js 14 or 16?(App Router)
 - **Language:** TypeScript (strict mode)
 - **Styling:** Tailwind CSS
 - **Components:** Custom shadcn/ui-style component system
