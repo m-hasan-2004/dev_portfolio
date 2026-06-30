@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "@/components/providers";
 import { Navigation } from "@/components/sections/navigation";
 import { Footer } from "@/components/sections/footer";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -74,6 +75,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="min-h-screen">{children}</main>
           <Footer />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
