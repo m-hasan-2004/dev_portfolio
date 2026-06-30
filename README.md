@@ -2,6 +2,9 @@
 
 A production-grade, ultra-modern developer portfolio website for **Hasan** — anonymous developer identity. Built with Next.js, TypeScript, Tailwind CSS, and Framer Motion.
 
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/46bcb960-b33b-4012-ac51-b148f0280b01" />
+
+
 ## Tech Stack
 
 - **Framework:** Next.js 14.2 (App Router)
