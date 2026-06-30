@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Terminal, Menu, X, Settings, Sun, Moon } from "lucide-react";
+import { Terminal, Menu, X, Settings, Sun, Moon, Volume2, VolumeX } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/lib/store";
+import { playUiClick } from "@/lib/audio";
 import { useTheme } from "next-themes";
 
 const baseLinks = [
@@ -22,6 +23,8 @@ export function Navigation() {
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const setCommandOpen = useAppStore((s) => s.setCommandOpen);
+  const soundEnabled = useAppStore((s) => s.soundEnabled);
+  const toggleSound = useAppStore((s) => s.toggleSound);
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
@@ -72,7 +75,7 @@ export function Navigation() {
         <div className="flex items-center gap-2">
           {mounted && (
             <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              onClick={() => { playUiClick(); setTheme(theme === "dark" ? "light" : "dark"); }}
               className="hidden md:flex items-center justify-center rounded-lg border border-void-border bg-void-surface/50 p-2 text-void-muted transition-colors hover:text-void-text"
               aria-label="Toggle theme"
             >
@@ -84,8 +87,22 @@ export function Navigation() {
             </button>
           )}
 
+          {mounted && (
+            <button
+              onClick={toggleSound}
+              className="hidden md:flex items-center justify-center rounded-lg border border-void-border bg-void-surface/50 p-2 text-void-muted transition-colors hover:text-void-text"
+              aria-label={soundEnabled ? "Mute sounds" : "Enable sounds"}
+            >
+              {soundEnabled ? (
+                <Volume2 className="h-4 w-4" />
+              ) : (
+                <VolumeX className="h-4 w-4" />
+              )}
+            </button>
+          )}
+
           <button
-            onClick={() => setCommandOpen(true)}
+            onClick={() => { playUiClick(); setCommandOpen(true); }}
             className="hidden md:flex items-center justify-center rounded-lg border border-void-border bg-void-surface/50 p-2 text-void-muted transition-colors hover:text-void-text"
             aria-label="Settings"
           >
@@ -128,6 +145,17 @@ export function Navigation() {
                 {link.label}
               </Link>
             ))}
+            <button
+              onClick={toggleSound}
+              className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-void-muted hover:bg-void-surface hover:text-void-text transition-colors"
+            >
+              {soundEnabled ? (
+                <Volume2 className="h-4 w-4" />
+              ) : (
+                <VolumeX className="h-4 w-4" />
+              )}
+              {soundEnabled ? "Sound on" : "Sound off"}
+            </button>
           </div>
         </motion.div>
       )}

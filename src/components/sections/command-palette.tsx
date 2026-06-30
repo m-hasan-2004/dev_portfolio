@@ -13,6 +13,8 @@ import {
   Mail,
   Github,
   Search,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 
 const basePages = [
@@ -29,7 +31,7 @@ const links = [
 
 export function CommandPalette() {
   const router = useRouter();
-  const { commandOpen, setCommandOpen } = useAppStore();
+  const { commandOpen, setCommandOpen, soundEnabled, toggleSound } = useAppStore();
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   useKeyboard();
@@ -94,6 +96,18 @@ export function CommandPalette() {
                 <kbd className="hidden sm:inline-flex items-center rounded border border-void-border bg-void-bg px-1.5 py-0.5 text-[10px] text-void-muted">
                   ESC
                 </kbd>
+                <button
+                  onClick={toggleSound}
+                  className="flex items-center justify-center rounded p-1 text-void-muted transition-colors hover:text-void-text"
+                  aria-label={soundEnabled ? "Mute sounds" : "Enable sounds"}
+                  title={soundEnabled ? "Sound on" : "Sound off"}
+                >
+                  {soundEnabled ? (
+                    <Volume2 className="h-3.5 w-3.5" />
+                  ) : (
+                    <VolumeX className="h-3.5 w-3.5" />
+                  )}
+                </button>
               </div>
               <div className="max-h-80 overflow-y-auto p-2">
                 {filtered.length === 0 ? (
