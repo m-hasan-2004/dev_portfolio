@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { useAppStore } from "@/lib/store";
 import { playUiClick } from "@/lib/audio";
 import { useTheme } from "next-themes";
+import { BuiltWith } from "@/components/built-with";
 
 const baseLinks = [
   { href: "/", label: "Home" },
@@ -101,6 +102,8 @@ export function Navigation() {
             </button>
           )}
 
+          {mounted && <BuiltWith />}
+
           <button
             onClick={() => { playUiClick(); setCommandOpen(true); }}
             className="hidden md:flex items-center justify-center rounded-lg border border-void-border bg-void-surface/50 p-2 text-void-muted transition-colors hover:text-void-text"
@@ -167,6 +170,7 @@ export function Navigation() {
               )}
               {soundEnabled ? "Sound on" : "Sound off"}
             </button>
+            <BuiltWith mobile />
             <button
               onClick={() => { playUiClick(); setCommandOpen(true); setMobileOpen(false); }}
               className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-void-muted hover:bg-void-surface hover:text-void-text transition-colors"
