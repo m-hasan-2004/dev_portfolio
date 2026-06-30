@@ -4,7 +4,7 @@ import "./globals.css";
 import { Providers } from "@/components/providers";
 import { Navigation } from "@/components/sections/navigation";
 import { Footer } from "@/components/sections/footer";
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   subsets: ["latin"],
