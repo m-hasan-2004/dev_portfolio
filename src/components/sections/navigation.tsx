@@ -102,7 +102,7 @@ export function Navigation() {
             </button>
           )}
 
-          {mounted && <BuiltWith />}
+          {mounted && <div className="hidden md:block"><BuiltWith /></div>}
 
           <button
             onClick={() => { playUiClick(); setCommandOpen(true); }}
