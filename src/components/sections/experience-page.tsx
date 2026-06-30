@@ -4,36 +4,36 @@ import { motion } from "framer-motion";
 
 const timeline = [
   {
-    period: "2023 — Present",
-    title: "Backend Developer",
-    org: "Personal Projects & Open Source",
+    period: "2026 — Present",
+    title: "Freelance Developer & Open Source",
+    org: "Self-Employed",
     description:
-      "Building and maintaining multiple backend systems using Python and Django. Designing RESTful APIs, optimizing database queries, and deploying containerized applications.",
-    tags: ["Python", "Django", "DRF", "Docker", "PostgreSQL"],
+      "Working on open-source projects and self-learning cutting edge technologies. Building and maintaining backend systems with Python and Django.",
+    tags: ["Python", "Django", "Open Source", "Self-Learning"],
   },
   {
-    period: "2023 — 2024",
-    title: "Python Development Intern",
-    org: "Tech Startup",
+    period: "Feb 2025 — Feb 2026",
+    title: "Python Developer",
+    org: "Private Sector, Iran, Qom",
     description:
-      "Contributed to backend development of a SaaS platform. Built API endpoints, integrated third-party services, and wrote automated tests. Improved system performance by optimizing database queries.",
-    tags: ["Python", "Django", "REST API", "MySQL"],
+      "Worked with Elasticsearch, Kibana, MongoDB, Cassandra, LDAP, and other tools. Built and maintained a sophisticated backend system.",
+    tags: ["Python", "Elasticsearch", "Kibana", "MongoDB", "Cassandra", "LDAP"],
   },
   {
-    period: "2023",
-    title: "Content Creator & Translator",
-    org: "Freelance",
+    period: "Sep 2021 — Sep 2024",
+    title: "Writer & Translator",
+    org: "Dicardo",
     description:
-      "Created technical content and translated documentation for developer communities. Focused on making technical concepts accessible to broader audiences.",
-    tags: ["Technical Writing", "Translation", "Documentation"],
+      "Blog-based content creation. Produced and edited graphical images using Adobe apps and AI tools. Summarized and created content using resources such as YouTube and Pinterest.",
+    tags: ["Content Creation", "Adobe", "AI Tools", "Translation"],
   },
   {
-    period: "2022 — 2023",
-    title: "Django Bootcamp",
-    org: "Self-Learning & Community",
+    period: "Jun 2023 — Jun 2024",
+    title: "Internship — Django / Python",
+    org: "Daneshkar",
     description:
-      "Completed intensive Django development training. Built multiple projects including e-commerce platforms, task management systems, and API services.",
-    tags: ["Django", "Web Development", "Git"],
+      "Completed 300+ hour bootcamp. Learned hard and soft skills including Python, Django, DRF, Docker, Docker Compose. Covered Agile principles, Scrum framework, and more.",
+    tags: ["Python", "Django", "DRF", "Docker", "Agile", "Scrum"],
   },
 ];
 

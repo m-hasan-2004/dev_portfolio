@@ -1,56 +1,61 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
 
 const categories = [
   {
     title: "Backend",
     icon: "⚡",
-    description: "Building robust server-side systems",
+    description: "Server-side development and APIs",
     skills: [
-      { name: "Python", level: 95 },
-      { name: "Django", level: 90 },
-      { name: "Django REST Framework", level: 88 },
+      { name: "Python", level: 85 },
+      { name: "Django", level: 85 },
       { name: "FastAPI", level: 80 },
-      { name: "Celery", level: 75 },
-      { name: "REST APIs", level: 92 },
+      { name: "REST API", level: 85 },
     ],
   },
   {
     title: "Databases",
     icon: "🗄️",
-    description: "Data storage and management",
+    description: "Data storage, search & analytics",
     skills: [
-      { name: "PostgreSQL", level: 88 },
-      { name: "MySQL", level: 82 },
-      { name: "SQLite", level: 85 },
-      { name: "Redis", level: 70 },
+      { name: "MySQL", level: 85 },
+      { name: "PostgreSQL", level: 85 },
+      { name: "MongoDB", level: 70 },
+      { name: "Cassandra", level: 65 },
+      { name: "Elasticsearch", level: 50 },
     ],
   },
   {
-    title: "DevOps",
+    title: "DevOps & Security",
     icon: "🚀",
-    description: "Deployment and infrastructure",
+    description: "Infrastructure, deployment & security",
     skills: [
-      { name: "Docker", level: 80 },
-      { name: "Linux", level: 88 },
-      { name: "Nginx", level: 72 },
-      { name: "CI/CD", level: 75 },
+      { name: "Docker", level: 85 },
+      { name: "GitLab", level: 85 },
+      { name: "Linux", level: 85 },
+      { name: "Network+", level: 85 },
+      { name: "Security+", level: 85 },
+      { name: "CEH", level: 45 },
     ],
   },
   {
-    title: "Tools",
+    title: "Tools & Languages",
     icon: "🔧",
-    description: "Development tools and workflows",
+    description: "Version control, testing & frontend",
     skills: [
-      { name: "Git", level: 92 },
-      { name: "GitHub", level: 90 },
-      { name: "VS Code", level: 95 },
-      { name: "Selenium", level: 78 },
-      { name: "Postman", level: 85 },
+      { name: "Git", level: 85 },
+      { name: "Kibana", level: 50 },
+      { name: "Selenium", level: 55 },
+      { name: "C++", level: 40 },
+      { name: "HTML & CSS", level: 55 },
+      { name: "JavaScript", level: 30 },
     ],
   },
+];
+
+const languages = [
+  { name: "English", level: "Upper Intermediate" },
 ];
 
 export function StackPage() {
@@ -117,6 +122,32 @@ export function StackPage() {
             </motion.div>
           ))}
         </div>
+
+        {/* Languages */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mt-6 glass rounded-xl p-6"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-2xl">🌐</span>
+            <div>
+              <h2 className="text-xl font-semibold">Languages</h2>
+              <p className="text-sm text-void-muted">Communication skills</p>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {languages.map((lang) => (
+              <span
+                key={lang.name}
+                className="rounded-full bg-accent-purple/10 px-3 py-1 text-sm font-medium text-accent-purple border border-accent-purple/20"
+              >
+                {lang.name} — {lang.level}
+              </span>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
