@@ -22,8 +22,8 @@ A production-grade, ultra-modern developer portfolio website for **Hasan** — a
 ### Setup
 
 ```bash
-git clone <repo-url>
-cd void-portfolio
+git clone https://github.com/m-hasan-2004/dev_portfolio
+cd dev_portfolio
 npm install
 npm run dev
 ```
