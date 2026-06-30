@@ -72,19 +72,47 @@ export function ActivityFeed() {
         const events = await eventsRes.json();
         const pushEvents = events
           .filter((e: any) => e.type === "PushEvent")
-          .flatMap((e: any) =>
-            e.payload.commits?.map((c: any) => ({
-              id: c.sha,
-              repo: e.repo.name.replace(`${GITHUB_USER}/`, ""),
-              message: c.message.split("\n")[0],
-              author: c.author?.name || GITHUB_USER,
-              date: e.created_at,
-              url: `https://github.com/${e.repo.name}/commit/${c.sha}`,
-            })) || []
-          )
-          .slice(0, 15);
-        setCommits(pushEvents);
-        setCachedData(EVENTS_CACHE_KEY, pushEvents);
+          .map((e: any) => ({
+            id: e.id,
+            repo: e.repo.name,
+            repoShort: e.repo.name.replace(`${GITHUB_USER}/`, ""),
+            sha: e.payload.head,
+            date: e.created_at,
+          }))
+          .slice(0, 12);
+
+        // Fetch commit messages in parallel (batches of 6)
+        const enriched = await Promise.all(
+          pushEvents.map(async (evt) => {
+            try {
+              const res = await fetch(
+                `https://api.github.com/repos/${evt.repo}/commits/${evt.sha}`
+              );
+              if (res.ok) {
+                const data = await res.json();
+                return {
+                  id: evt.id,
+                  repo: evt.repoShort,
+                  message: data.commit.message.split("\n")[0],
+                  author: data.commit.author?.name || GITHUB_USER,
+                  date: evt.date,
+                  url: `https://github.com/${evt.repo}/commit/${evt.sha}`,
+                };
+              }
+            } catch {}
+            return {
+              id: evt.id,
+              repo: evt.repoShort,
+              message: evt.sha.slice(0, 7),
+              author: GITHUB_USER,
+              date: evt.date,
+              url: `https://github.com/${evt.repo}/commit/${evt.sha}`,
+            };
+          })
+        );
+
+        setCommits(enriched);
+        setCachedData(EVENTS_CACHE_KEY, enriched);
       }
 
       if (profileRes.ok) {
