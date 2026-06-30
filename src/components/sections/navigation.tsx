@@ -146,6 +146,17 @@ export function Navigation() {
               </Link>
             ))}
             <button
+              onClick={() => { playUiClick(); setTheme(theme === "dark" ? "light" : "dark"); }}
+              className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-void-muted hover:bg-void-surface hover:text-void-text transition-colors"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
+              {theme === "dark" ? "Light mode" : "Dark mode"}
+            </button>
+            <button
               onClick={toggleSound}
               className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-void-muted hover:bg-void-surface hover:text-void-text transition-colors"
             >
@@ -155,6 +166,13 @@ export function Navigation() {
                 <VolumeX className="h-4 w-4" />
               )}
               {soundEnabled ? "Sound on" : "Sound off"}
+            </button>
+            <button
+              onClick={() => { playUiClick(); setCommandOpen(true); setMobileOpen(false); }}
+              className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-void-muted hover:bg-void-surface hover:text-void-text transition-colors"
+            >
+              <Settings className="h-4 w-4" />
+              Settings
             </button>
           </div>
         </motion.div>
