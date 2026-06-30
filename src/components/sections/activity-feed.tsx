@@ -18,7 +18,8 @@ import { getCachedData, setCachedData } from "@/lib/cache";
 const GITHUB_USER = "m-hasan-2004";
 const EVENTS_CACHE_KEY = "void_github_events";
 const PROFILE_CACHE_KEY = "void_github_profile";
-const CACHE_TTL = 5 * 60 * 1000; // 5 min for events, 30 min for profile
+const REPOS_CACHE_KEY = "void_github_top_repos";
+const CACHE_TTL = 5 * 60 * 1000;
 
 interface CommitEvent {
   id: string;
@@ -34,6 +35,7 @@ interface GitHubProfile {
   followers: number;
   following: number;
   created_at: string;
+  avatar_url: string;
 }
 
 interface RepoMinimal {
@@ -53,43 +55,40 @@ export function ActivityFeed() {
     if (!force) {
       const cachedEvents = getCachedData<CommitEvent[]>(EVENTS_CACHE_KEY, CACHE_TTL);
       const cachedProfile = getCachedData<GitHubProfile>(PROFILE_CACHE_KEY, 30 * 60 * 1000);
-      if (cachedEvents && cachedProfile) {
+      const cachedRepos = getCachedData<RepoMinimal[]>(REPOS_CACHE_KEY, CACHE_TTL);
+      if (cachedEvents && cachedProfile && cachedRepos) {
         setCommits(cachedEvents);
         setProfile(cachedProfile);
+        setTopRepos(cachedRepos);
         setLoading(false);
         return;
       }
     }
 
+    // Fetch events
     try {
-      const [eventsRes, profileRes, reposRes] = await Promise.all([
-        fetch(`https://api.github.com/users/${GITHUB_USER}/events?per_page=30`),
-        fetch(`https://api.github.com/users/${GITHUB_USER}`),
-        fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=stars&direction=desc`),
-      ]);
-
-      if (eventsRes.ok) {
-        const events = await eventsRes.json();
+      const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/events?per_page=30`);
+      if (res.ok) {
+        const events = await res.json();
         const pushEvents = events
-          .filter((e: any) => e.type === "PushEvent")
+          .filter((e: any) => e.type === "PushEvent" && e.payload.head)
           .map((e: any) => ({
             id: e.id,
             repo: e.repo.name,
             repoShort: e.repo.name.replace(`${GITHUB_USER}/`, ""),
-            sha: e.payload.head,
+            sha: e.payload.head as string,
             date: e.created_at,
           }))
           .slice(0, 12);
 
-        // Fetch commit messages in parallel (batches of 6)
         const enriched = await Promise.all(
           pushEvents.map(async (evt) => {
             try {
-              const res = await fetch(
+              const r = await fetch(
                 `https://api.github.com/repos/${evt.repo}/commits/${evt.sha}`
               );
-              if (res.ok) {
-                const data = await res.json();
+              if (r.ok) {
+                const data = await r.json();
                 return {
                   id: evt.id,
                   repo: evt.repoShort,
@@ -114,27 +113,40 @@ export function ActivityFeed() {
         setCommits(enriched);
         setCachedData(EVENTS_CACHE_KEY, enriched);
       }
+    } catch {
+      const stale = getCachedData<CommitEvent[]>(EVENTS_CACHE_KEY, Infinity);
+      if (stale) setCommits(stale);
+    }
 
-      if (profileRes.ok) {
-        const p = await profileRes.json();
-        setProfile({
+    // Fetch profile
+    try {
+      const res = await fetch(`https://api.github.com/users/${GITHUB_USER}`);
+      if (res.ok) {
+        const p = await res.json();
+        const profileData: GitHubProfile = {
           public_repos: p.public_repos,
           followers: p.followers,
           following: p.following,
           created_at: p.created_at,
-        });
-        setCachedData(PROFILE_CACHE_KEY, {
-          public_repos: p.public_repos,
-          followers: p.followers,
-          following: p.following,
-          created_at: p.created_at,
-        });
+          avatar_url: p.avatar_url,
+        };
+        setProfile(profileData);
+        setCachedData(PROFILE_CACHE_KEY, profileData);
       }
+    } catch {
+      const stale = getCachedData<GitHubProfile>(PROFILE_CACHE_KEY, Infinity);
+      if (stale) setProfile(stale);
+    }
 
-      if (reposRes.ok) {
-        const repos = await reposRes.json();
+    // Fetch repos
+    try {
+      const res = await fetch(
+        `https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=stars&direction=desc`
+      );
+      if (res.ok) {
+        const repos = await res.json();
         const sorted = repos
-          .filter((r: any) => !r.fork)
+          .filter((r: any) => !r.fork && r.name !== GITHUB_USER)
           .sort((a: any, b: any) => b.stargazers_count - a.stargazers_count)
           .slice(0, 5)
           .map((r: any) => ({
@@ -144,15 +156,14 @@ export function ActivityFeed() {
             language: r.language,
           }));
         setTopRepos(sorted);
+        setCachedData(REPOS_CACHE_KEY, sorted);
       }
     } catch {
-      const staleEvents = getCachedData<CommitEvent[]>(EVENTS_CACHE_KEY, Infinity);
-      const staleProfile = getCachedData<GitHubProfile>(PROFILE_CACHE_KEY, Infinity);
-      if (staleEvents) setCommits(staleEvents);
-      if (staleProfile) setProfile(staleProfile);
-    } finally {
-      setLoading(false);
+      const stale = getCachedData<RepoMinimal[]>(REPOS_CACHE_KEY, Infinity);
+      if (stale) setTopRepos(stale);
     }
+
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -351,11 +362,19 @@ export function ActivityFeed() {
               <Card className="mt-4">
                 <CardContent className="px-4 py-3">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-accent-purple to-accent-blue">
-                      <span className="text-sm font-bold text-white">
-                        {GITHUB_USER.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
+                    {profile.avatar_url ? (
+                      <img
+                        src={profile.avatar_url}
+                        alt={GITHUB_USER}
+                        className="h-9 w-9 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-accent-purple to-accent-blue">
+                        <span className="text-sm font-bold text-white">
+                          {GITHUB_USER.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    )}
                     <div>
                       <p className="text-sm font-medium">{GITHUB_USER}</p>
                       <p className="text-xs text-void-muted">

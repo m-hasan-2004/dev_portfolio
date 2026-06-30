@@ -55,7 +55,7 @@ export function LabPageClient() {
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
       const filtered = data
-        .filter((r: any) => !r.fork)
+        .filter((r: any) => !r.fork && r.name !== "m-hasan-2004")
         .map((r: any) => ({
           id: r.id,
           name: r.name,
