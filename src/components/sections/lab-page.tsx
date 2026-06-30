@@ -6,6 +6,7 @@ import { Star, ExternalLink, Clock, Code2, RefreshCw } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getCachedData, setCachedData } from "@/lib/cache";
+import { ActivityFeed } from "@/components/sections/activity-feed";
 
 const CACHE_KEY = "void_github_repos";
 const CACHE_TTL = 60 * 60 * 1000; // 1 hour
@@ -237,6 +238,8 @@ export function LabPageClient() {
             ))}
           </div>
         )}
+
+        <ActivityFeed />
       </div>
     </section>
   );
