@@ -12,6 +12,7 @@ import {
   Activity,
   RefreshCw,
 } from "lucide-react";
+import Image from "next/image";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { getCachedData, setCachedData } from "@/lib/cache";
 
@@ -36,6 +37,14 @@ interface GitHubProfile {
   following: number;
   created_at: string;
   avatar_url: string;
+}
+
+interface PushEvent {
+  id: string;
+  repo: string;
+  repoShort: string;
+  sha: string;
+  date: string;
 }
 
 interface RepoMinimal {
@@ -72,7 +81,7 @@ export function ActivityFeed() {
         const events = await res.json();
         const pushEvents = events
           .filter((e: any) => e.type === "PushEvent" && e.payload.head)
-          .map((e: any) => ({
+          .map((e: any): PushEvent => ({
             id: e.id,
             repo: e.repo.name,
             repoShort: e.repo.name.replace(`${GITHUB_USER}/`, ""),
@@ -82,7 +91,7 @@ export function ActivityFeed() {
           .slice(0, 12);
 
         const enriched = await Promise.all(
-          pushEvents.map(async (evt) => {
+          pushEvents.map(async (evt: PushEvent) => {
             try {
               const r = await fetch(
                 `https://api.github.com/repos/${evt.repo}/commits/${evt.sha}`
@@ -363,9 +372,11 @@ export function ActivityFeed() {
                 <CardContent className="px-4 py-3">
                   <div className="flex items-center gap-3">
                     {profile.avatar_url ? (
-                      <img
+                      <Image
                         src={profile.avatar_url}
                         alt={GITHUB_USER}
+                        width={36}
+                        height={36}
                         className="h-9 w-9 rounded-full object-cover"
                       />
                     ) : (
