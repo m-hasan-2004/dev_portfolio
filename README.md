@@ -4,13 +4,13 @@ A production-grade, ultra-modern developer portfolio website for **Hasan** — a
 
 ## Tech Stack
 
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript (strict mode)
-- **Styling:** Tailwind CSS
-- **Components:** Custom shadcn/ui-style component system
-- **Animations:** Framer Motion
-- **State:** Zustand
-- **Icons:** Lucide React
+- **Framework:** Next.js 14.2 (App Router)
+- **Language:** TypeScript 5.5 (strict mode)
+- **Styling:** Tailwind CSS 3.4
+- **Components:** Custom shadcn/ui-style component system (CVA 0.7)
+- **Animations:** Framer Motion 11.0
+- **State:** Zustand 4.5
+- **Icons:** Lucide React 0.400
 
 ## Getting Started
 
@@ -82,6 +82,9 @@ Without a token, the API allows **60 requests/hour**. With a Personal Access Tok
 - Animated skill progress bars
 - Timeline with alternating layout
 - Command palette (Cmd/Ctrl + K)
+- Toggleable page transition sounds (Web Audio API)
+- UI interaction click sounds on theme/settings toggle
+- Built with nav section with live tech stack versions
 - Live GitHub project fetching with caching
 - Responsive design (mobile-first)
 - SEO metadata + OpenGraph + sitemap

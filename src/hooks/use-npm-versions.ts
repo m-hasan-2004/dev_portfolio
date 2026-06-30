@@ -1,58 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-const packages = [
-  { name: "next", label: "Next.js" },
-  { name: "react", label: "React" },
-  { name: "framer-motion", label: "Framer Motion" },
-  { name: "tailwindcss", label: "Tailwind CSS" },
-  { name: "zustand", label: "Zustand" },
-  { name: "typescript", label: "TypeScript" },
-  { name: "lucide-react", label: "Lucide" },
+const stack = [
+  { name: "next", label: "Next.js", version: "14.2" },
+  { name: "typescript", label: "TypeScript", version: "5.5" },
+  { name: "tailwindcss", label: "Tailwind CSS", version: "3.4" },
+  { name: "class-variance-authority", label: "shadcn/ui", version: "0.7" },
+  { name: "framer-motion", label: "Framer Motion", version: "11.0" },
+  { name: "zustand", label: "Zustand", version: "4.5" },
+  { name: "lucide-react", label: "Lucide React", version: "0.400" },
 ];
 
-interface PkgVersion {
-  name: string;
-  label: string;
-  version: string;
-}
-
 export function useNpmVersions() {
-  const [versions, setVersions] = useState<PkgVersion[]>([]);
-
-  useEffect(() => {
-    const cacheKey = "npm-versions-cache";
-    const cacheTtl = 60 * 60 * 1000; // 1 hour
-
-    try {
-      const cached = localStorage.getItem(cacheKey);
-      if (cached) {
-        const { data, ts } = JSON.parse(cached);
-        if (Date.now() - ts < cacheTtl) {
-          setVersions(data);
-          return;
-        }
-      }
-    } catch {}
-
-    Promise.all(
-      packages.map(async (pkg) => {
-        try {
-          const res = await fetch(`https://registry.npmjs.org/${pkg.name}/latest`);
-          const data = await res.json();
-          return { name: pkg.name, label: pkg.label, version: data.version };
-        } catch {
-          return { name: pkg.name, label: pkg.label, version: "?" };
-        }
-      })
-    ).then((results) => {
-      setVersions(results);
-      try {
-        localStorage.setItem(cacheKey, JSON.stringify({ data: results, ts: Date.now() }));
-      } catch {}
-    });
-  }, []);
-
+  const [versions] = useState(stack);
   return versions;
 }
